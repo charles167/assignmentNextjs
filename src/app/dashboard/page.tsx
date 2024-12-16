@@ -10,13 +10,20 @@ import { AiFillEdit } from "react-icons/ai";
 import { FaRegEye } from "react-icons/fa";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+interface Department {
+  _id: string;
+  departmentName: string;
+  subDepartments: string[];
+}
+
 const Dashboard = () => {
-  const [sampleData, setData] = useState([]);
+  const [sampleData, setData] = useState<Department[]>([]);
   const [loader, setLoader] = useState(false);
 
   // Modal state
   const [showModal, setShowModal] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
 
   const getAllDept = async () => {
     try {
@@ -24,33 +31,31 @@ const Dashboard = () => {
       const response = await axios.get("https://assignmentnestjs.onrender.com/departments");
       setData(response.data);
       console.log(response.data);
-      
     } catch (error) {
       alert("Error fetching data" + error);
     } finally {
       setLoader(false);
     }
   };
+
   const handleDelete = async (id: string) => {
     try {
-        console.log(`Deleting department with ID: ${id}`);
-        const response = await axios.delete(`http://localhost:4000/departments/${id}`);
-        console.log('Delete response:', response);
+      console.log(`Deleting department with ID: ${id}`);
+      const response = await axios.delete(`http://localhost:4000/departments/${id}`);
+      console.log('Delete response:', response);
 
-        if (response.status === 200) {
-            const updatedData = sampleData.filter((dept) => dept._id !== id);
-            setData(updatedData);
-        }
+      if (response.status === 200) {
+          const updatedData = sampleData.filter((dept) => dept._id !== id);
+          setData(updatedData);
+      }
     } catch {
-        alert("Error deleting department");
+      alert("Error deleting department");
     }
-};
+  };
 
-  
   useEffect(() => {
     getAllDept();
   }, []);
-
 
   // Pagination states
   const itemsPerPage = 10;
@@ -62,7 +67,7 @@ const Dashboard = () => {
   const currentData = sampleData.slice(startIndex, endIndex);
 
   // Handle page change
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
@@ -70,7 +75,7 @@ const Dashboard = () => {
   const totalPages = Math.ceil(sampleData.length / itemsPerPage);
 
   // Handle modal open
-  const handleView = (department) => {
+  const handleView = (department: Department) => {
     setSelectedDepartment(department); // Set the selected department
     setShowModal(true); // Show the modal
   };
@@ -113,17 +118,17 @@ const Dashboard = () => {
                           .join(", ")}{" "}
                     {row.subDepartments.length > 2 && " ..."}
                   </td>
-                  <td style={{ display: "flex", alignItems:"center", justifyContent:"center",gap:10,}}>
-                
-                  <Link
-                href={{
-                pathname: "/editForm",
-                query: { id: row._id },
-              }}
-              className="actionButton">
-                <AiFillEdit color="green" /></Link>
+                  <td style={{ display: "flex", alignItems:"center", justifyContent:"center", gap:10 }}>
+                    <Link
+                      href={{
+                        pathname: "/editForm",
+                        query: { id: row._id },
+                      }}
+                      className="actionButton">
+                      <AiFillEdit color="green" />
+                    </Link>
 
-                    <button onClick={()=>handleDelete(row._id)} className="actionsButton">
+                    <button onClick={() => handleDelete(row._id)} className="actionsButton">
                       <MdOutlineDelete color="red" />
                     </button>
                     <button
