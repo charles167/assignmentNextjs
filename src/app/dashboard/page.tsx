@@ -26,39 +26,26 @@ const Dashboard = () => {
       console.log(response.data);
       
     } catch (error) {
-      alert("Error fetching data");
+      alert("Error fetching data" + error);
     } finally {
       setLoader(false);
     }
   };
   const handleDelete = async (id: string) => {
     try {
-      console.log(`Deleting department with ID: ${id}`);  // Log the ID to ensure it's correct
-      const response = await axios.delete(`http://localhost:4000/departments/${id}`);
-      console.log('Delete response:', response);  // Log the response to see the result
-  
-      if (response.status === 200) {
-        // Remove the deleted department from the data
-        const updatedData = sampleData.filter((dept) => dept._id !== id);
-  
-        // Update state with the filtered data
-        setData(updatedData);
-  
-        // Check if the current page has data
-        if (updatedData.length === 0 && currentPage > 1) {
-          // If the current page has no data after deletion, move to the previous page
-          setCurrentPage(currentPage - 1);
+        console.log(`Deleting department with ID: ${id}`);
+        const response = await axios.delete(`http://localhost:4000/departments/${id}`);
+        console.log('Delete response:', response);
+
+        if (response.status === 200) {
+            const updatedData = sampleData.filter((dept) => dept._id !== id);
+            setData(updatedData);
         }
-  
-        alert("Department deleted successfully");
-      } else {
-        throw new Error(`Failed to delete department. Status code: ${response.status}`);
-      }
-    } catch (error) {
-      console.error('Error deleting department:', error);  // Log the error for debugging
-      alert("Error deleting department: " + error.message);  // Provide a more specific error message to the user
+    } catch {
+        alert("Error deleting department");
     }
-  };
+};
+
   
   useEffect(() => {
     getAllDept();

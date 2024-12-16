@@ -36,9 +36,10 @@ const Login = () => {
             } else {
                 setError(true);  // Show error if login is unsuccessful
             }
-        } catch (err) {
-            setError(true);  // Show error if there's a problem with the request
-        } finally {
+        } catch {
+            setError(true);
+        }
+        finally {
             setLoading(false);
         }
     };
