@@ -42,7 +42,7 @@ const Dashboard = () => {
     if (!window.confirm("Are you sure you want to delete this department?")) return;
 
     try {
-      const response = await axios.delete(`http://localhost:4000/departments/${id}`);
+      const response = await axios.delete(`https://assignmentnestjs.onrender.com/departments/${id}`);
       if (response.status === 200) {
         const updatedData = sampleData.filter((dept) => dept._id !== id);
         setData(updatedData);
