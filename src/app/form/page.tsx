@@ -1,7 +1,6 @@
 "use client"
 import { useState } from 'react';
 import "./form.css"
-import Link from 'next/link';
 const DepartmentForm = () => {
   // States to hold the form inputs
   const [departmentName, setDepartmentName] = useState('');

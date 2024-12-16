@@ -31,18 +31,40 @@ const Dashboard = () => {
       setLoader(false);
     }
   };
-
+  const handleDelete = async (id: string) => {
+    try {
+      console.log(`Deleting department with ID: ${id}`);  // Log the ID to ensure it's correct
+      const response = await axios.delete(`http://localhost:4000/departments/${id}`);
+      console.log('Delete response:', response);  // Log the response to see the result
+  
+      if (response.status === 200) {
+        // Remove the deleted department from the data
+        const updatedData = sampleData.filter((dept) => dept._id !== id);
+  
+        // Update state with the filtered data
+        setData(updatedData);
+  
+        // Check if the current page has data
+        if (updatedData.length === 0 && currentPage > 1) {
+          // If the current page has no data after deletion, move to the previous page
+          setCurrentPage(currentPage - 1);
+        }
+  
+        alert("Department deleted successfully");
+      } else {
+        throw new Error(`Failed to delete department. Status code: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error deleting department:', error);  // Log the error for debugging
+      alert("Error deleting department: " + error.message);  // Provide a more specific error message to the user
+    }
+  };
+  
   useEffect(() => {
     getAllDept();
   }, []);
 
-  //edit 
-  const handleEdit = () => {
-    router.push({
-      pathname: "/editForm",
-      query: { id: "123", name: "Sample Department" }
-    });
-  };
+
   // Pagination states
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -82,7 +104,7 @@ const Dashboard = () => {
         {loader ? (
           <span className="loader"></span>
         ) : (
-          <Table border={1} width={800}>
+          <Table border={1}>
             <thead>
               <tr>
                 <th>ID</th>
@@ -104,17 +126,17 @@ const Dashboard = () => {
                           .join(", ")}{" "}
                     {row.subDepartments.length > 2 && " ..."}
                   </td>
-                  <td style={{ display: "flex",  height: "90%" }}>
+                  <td style={{ display: "flex", alignItems:"center", justifyContent:"center",gap:10,}}>
                 
                   <Link
-  href={{
-    pathname: "/editForm",
-    query: { id: row._id },
-  }}
-  className="actionButton">
-    <AiFillEdit color="green" /></Link>
+                href={{
+                pathname: "/editForm",
+                query: { id: row._id },
+              }}
+              className="actionButton">
+                <AiFillEdit color="green" /></Link>
 
-                    <button className="actionsButton">
+                    <button onClick={()=>handleDelete(row._id)} className="actionsButton">
                       <MdOutlineDelete color="red" />
                     </button>
                     <button

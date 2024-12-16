@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import Link from 'next/link';
 import 'bootstrap/dist/css/bootstrap.min.css';
 const Login = () => {
     const router = useRouter();

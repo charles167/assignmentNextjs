@@ -13,12 +13,12 @@ const EditForm = () => {
   const [selectedSubDepartments, setSelectedSubDepartments] = useState([]);
   const [loader, setLoader] = useState(false);
   const subDepartments = ["HR", "Engineering", "Marketing", "Finance", "Sales"];
-
+ const [loader2 , setLoader2] = useState(false)
   // Fetch existing department data
   useEffect(() => {
     const fetchDepartment = async () => {
       try {
-        setLoader(true);
+        setLoader2(true);
         const response = await fetch(`https://assignmentnestjs.onrender.com/departments/${id}`);
         if (response.ok) {
           const data = await response.json();
@@ -30,7 +30,7 @@ const EditForm = () => {
       } catch (error) {
         console.error("Error fetching department:", error);
       } finally {
-        setLoader(false);
+        setLoader2(false);
       }
     };
 
@@ -93,7 +93,7 @@ const EditForm = () => {
             type="text"
             id="departmentName"
             className="input"
-            value={departmentName}
+            value={loader2?"loading....":departmentName}
             onChange={handleDepartmentNameChange}
             required
           />
