@@ -90,13 +90,13 @@ const Dashboard = () => {
   const q = 3;
 
   return (
-    <div className="p-5">
-      <Link href="/form">Create Department</Link>
+    <div className="p-md-5 p-sm-1">
+      <Link href="/form" className="mt-5">Create Department</Link>
       <div className="table-body">
         {loader ? (
           <span className="loader"></span>
         ) : (
-          <Table border={1}>
+          <Table border={1} className="my-5">
             <thead>
               <tr>
                 <th>ID</th>
