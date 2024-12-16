@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 const Login = () => {
     const router = useRouter();
     const [input, setInput] = useState({
@@ -12,12 +13,13 @@ const Login = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const handleInput = (e) => {
+    // Explicitly typing the event parameter as React.ChangeEvent<HTMLInputElement>
+    const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setInput({ ...input, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError(false); // Reset error state
@@ -38,8 +40,7 @@ const Login = () => {
             }
         } catch {
             setError(true);
-        }
-        finally {
+        } finally {
             setLoading(false);
         }
     };
@@ -54,19 +55,18 @@ const Login = () => {
                             Sign in to your account
                         </div>
                         <div className='input-containter'>
-                    <div>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png" alt="" />
-                    </div>
-                    <input type="text" name='username' onChange={handleInput} placeholder='input username' required />
-                </div>
-                
+                            <div>
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png" alt="" />
+                            </div>
+                            <input type="text" name='username' onChange={handleInput} placeholder='input username' required />
+                        </div>
 
-                <div className='input-containter'>
-                    <div>
-                        <img src="https://icons.veryicon.com/png/o/miscellaneous/remitting-country-linear-icon/password-148.png" alt="" />
-                    </div>
-                    <input type="password" name='password' onChange={handleInput} placeholder='input password' required />
-                </div>
+                        <div className='input-containter'>
+                            <div>
+                                <img src="https://icons.veryicon.com/png/o/miscellaneous/remitting-country-linear-icon/password-148.png" alt="" />
+                            </div>
+                            <input type="password" name='password' onChange={handleInput} placeholder='input password' required />
+                        </div>
                         {error && <div className="error">Incorrect credentials, please try again.</div>}
 
                         <button type="submit" disabled={loading}>
