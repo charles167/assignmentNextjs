@@ -1,7 +1,8 @@
-"use client"
-import React, { Suspense, useState, useEffect } from "react";
+import { Suspense } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import "../form/form.css";
+
 const EditForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -88,44 +89,51 @@ const EditForm = () => {
 
   return (
     <div className="content-body">
-      <Suspense fallback={<div>Loading...</div>}>
-        <form className="form" onSubmit={handleSubmit}>
-          <div className="header">Edit Department</div>
-          <div>
-            <label htmlFor="departmentName">Department Name:</label>
-            <input
-              type="text"
-              id="departmentName"
-              className="input"
-              value={loader2 ? "loading...." : departmentName}
-              onChange={handleDepartmentNameChange}
-              required
-            />
-          </div>
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="header">Edit Department</div>
+        <div>
+          <label htmlFor="departmentName">Department Name:</label>
+          <input
+            type="text"
+            id="departmentName"
+            className="input"
+            value={loader2 ? "loading...." : departmentName}
+            onChange={handleDepartmentNameChange}
+            required
+          />
+        </div>
 
-          <div>
-            <label htmlFor="subDepartments">Select SubDepartments:</label>
-            <select
-              id="subDepartments"
-              multiple
-              value={selectedSubDepartments}
-              onChange={handleSubDepartmentChange}
-            >
-              {subDepartments.map((subDepartment) => (
-                <option key={subDepartment} value={subDepartment}>
-                  {subDepartment}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div>
+          <label htmlFor="subDepartments">Select SubDepartments:</label>
+          <select
+            id="subDepartments"
+            multiple
+            value={selectedSubDepartments}
+            onChange={handleSubDepartmentChange}
+          >
+            {subDepartments.map((subDepartment) => (
+              <option key={subDepartment} value={subDepartment}>
+                {subDepartment}
+              </option>
+            ))}
+          </select>
+        </div>
 
-          <button type="submit" disabled={loader}>
-            {loader ? "Loading..." : "Submit"}
-          </button>
-        </form>
-      </Suspense>
+        <button type="submit" disabled={loader}>
+          {loader ? "Loading..." : "Submit"}
+        </button>
+      </form>
     </div>
   );
 };
 
-export default EditForm;
+// Wrap the EditForm component with Suspense to handle the CSR error
+const EditFormWithSuspense = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EditForm />
+    </Suspense>
+  );
+};
+
+export default EditFormWithSuspense;
