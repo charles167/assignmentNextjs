@@ -1,8 +1,8 @@
+"use client"
 import { Suspense } from "react";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import "../form/form.css";
-
 const EditForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
